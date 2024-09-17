@@ -1,4 +1,6 @@
 const { v4: uuidv4 } = require("uuid");
+const { validateGenre } = require("./validations");
+
 const express = require("express");
 const app = express();
 
@@ -18,6 +20,10 @@ app.get("/api/movies/genres", (req, res) => {
 });
 
 app.post("/api/movies/genres", (req, res) => {
+  const { error } = validateGenre(req.body);
+  if (error) {
+    return res.status(400).send(error.details[0].message);
+  }
   const genre = {
     id: uuidv4(),
     name: req.body.name,
