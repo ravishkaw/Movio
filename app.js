@@ -29,7 +29,7 @@ app.post("/api/movies/genres", (req, res) => {
     name: req.body.name,
   };
   genres.push(genre);
-  res.send(genres);
+  res.status(201).send(genre);
 });
 
 app.get("/api/movies/genres/:id", (req, res) => {
@@ -49,6 +49,11 @@ app.put("/api/movies/genres/:id", (req, res) => {
     return res.status(404).send("Genre not found");
   }
 
+  const { error } = validateGenre(req.body);
+  if (error) {
+    return res.status(400).send(error.details[0].message);
+  }
+
   genre.name = req.body.name;
   res.send(genre);
 });
@@ -62,7 +67,7 @@ app.delete("/api/movies/genres/:id", (req, res) => {
 
   const index = genres.indexOf(genre);
   genres.splice(index, 1);
-  res.send(genres);
+  res.send({ message: "Genre deleted successfully", deletedGenre: genre }); 
 });
 
 const port = process.env.PORT || 3000;
