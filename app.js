@@ -53,6 +53,18 @@ app.put("/api/movies/genres/:id", (req, res) => {
   res.send(genre);
 });
 
+app.delete("/api/movies/genres/:id", (req, res) => {
+  const genre = genres.find((gen) => gen.id === req.params.id);
+
+  if (!genre) {
+    return res.status(404).send("Genre not found");
+  }
+
+  const index = genres.indexOf(genre);
+  genres.splice(index, 1);
+  res.send(genres);
+});
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}...`);
