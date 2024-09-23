@@ -1,17 +1,6 @@
-const { validateGenre } = require("./validations");
-const mongoose = require("mongoose");
+const { Genre, validateGenre } = require("../models/genre");
 const express = require("express");
 const router = express.Router();
-
-const genreSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    minlength: 3,
-  },
-});
-
-const Genre = mongoose.model("Genre", genreSchema);
 
 router.get("/", async (req, res) => {
   try {
